@@ -1,0 +1,25 @@
+local m= peripheral.wrap("right")
+local x=9
+local y=7
+m.setBackgroundColor(colors.blue)
+m.clear()
+while true do
+event, side, xpos, ypos = os.pullEvent("monitor_touch")
+--m.write("X: "..xpos.."Y: "..ypos)
+while y<=13 do
+while x<=20 do
+paintutils.drawPixel(x,y, colors.red)
+x=x+1
+end
+x=9
+y=y+1
+end
+
+
+if xpos > 9 and xpos< 20 and ypos >7 and ypos <13
+then
+m.setCursorPos(15, 10)
+m.write("coucou")
+end
+end
+ 

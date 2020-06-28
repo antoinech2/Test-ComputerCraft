@@ -1,0 +1,5 @@
+term= peripheral.wrap("right")
+while true do
+term.setBackgroundColor(2048)
+sleep(1)
+end

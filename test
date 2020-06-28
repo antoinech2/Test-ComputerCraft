@@ -1,0 +1,13 @@
+--os.unloadAPI("Button")
+os.loadAPI("Button")
+
+local monitor = peripheral.wrap( "right" )
+monitor.clear()
+
+monitor.setCursorPos(1,1)
+monitor.setTextColor(colors.red)
+monitor.write( "Hello World!" )
+
+b1 = Button.Create(3,3,1,1,colors.red)
+b1:show()
+

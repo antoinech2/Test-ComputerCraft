@@ -1,0 +1,4 @@
+local monitor = peripheral.wrap( "right" )
+monitor.clear()
+coucou
+bonjour

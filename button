@@ -1,0 +1,37 @@
+-- Meta class
+DefaultButton = {
+	x = 1,
+	y = 1,
+	l = 1,
+	w = 1,
+	backcolor = colors.white
+}
+
+-- Derived class method new
+
+function Create (x,y,l,w,backcolor)
+   o = {}
+   setmetatable(o, self)
+   self.__index = self
+   
+   --local self = Utils.ShallowCopy(DefaultButton)
+   
+   self.x = x or 1
+   self.y = y or 1
+   self.l = l or 1
+   self.w = w or 1
+   self.backcolor = backcolor or colors.white
+   
+   return self
+end
+
+-- Derived class method 
+
+function Show()
+   paintutils.drawBox(self.x, self.y, self.x+self.l, self.y+self.w, self.backcolor)
+end
+
+function SetBackColor(color)
+   self.backcolor = color or colors.white
+end
+

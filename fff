@@ -1,0 +1,121 @@
+
+Ecran = nil
+Sensor = nil
+PlayersPresent = { "flint" = 0, "antoinech" = 0,}
+
+function draw( x, y )
+	paintutils.drawPixel(x,y,colors.red)
+end
+
+function detectDevice (device)
+	local deviceSide="none"
+	local peripheralList = peripheral.getNames()
+	for k,v in pairs (peripheralList) do
+		local deviceType = peripheral.getType(v)
+		if device == nil then
+			print (v..":"..deviceType)
+		elseif device == deviceType then
+			deviceSide = v
+			break
+		end
+	end
+	return(deviceSide)
+end
+
+function sayHelloToPlayer()
+	if Sensor then
+		Ecran.setCursorPos(1, 1)
+		for index,player in ipairs( PlayersPresent ) do
+			if (PlayersPresent[player] == 1) then
+				PlayersPresent[player] = 2
+			end
+		end
+		
+		local players = Sensor.getPlayers()
+		for index,player in ipairs( players ) do
+			local playerName = player["name"]
+			if (PlayersPresent[playerName] == 0) or (PlayersPresent[playerName] == nil) then
+				PlayersPresent[playerName] = 1
+				print("Hello "..playerName)
+			elseif (PlayersPresent[playerName] == 2) then
+				PlayersPresent[playerName] = 1
+			end
+		end
+		
+		for index,player in ipairs( PlayersPresent ) do
+			print(player..":"..PlayersPresent[player])
+			if (PlayersPresent[player] == 2) then
+				PlayersPresent[player] = 0
+				print("Good bye "..player)
+			end
+		end
+		print ("---")
+
+	end
+end
+
+
+function detectEvent()
+    local bcontinue = true
+    local event,p1,p2,p3,p4 = os.pullEvent()
+	p1 = p1 or ""
+	p2 = p2 or ""
+	p3 = p3 or ""
+	p4 = p4 or ""
+
+
+	Ecran.setBackgroundColor(colors.blue)
+    Ecran.setCursorPos(1, 10)
+	Ecran.write("Event:"..event.." /p1:"..p1.." /p2:"..p2.." /p3:"..p3.." /p4:"..p4)
+    if event == "monitor_touch" then
+    	draw(p2,p3)
+    end
+    
+    if event == "key" then
+    	bcontinue = false
+    end
+    
+    return (bcontinue)
+end
+
+
+
+--function sayHelloToPlayer()
+--	if Sensor then
+--		players = Sensor.getPlayers()
+--		Ecran.setCursorPos(1, 1)
+--		for index,player in ipairs( players ) do
+--			--for k,v in pairs( player ) do
+--			--	print("k: "..k.." v:"..v)
+--			--end
+--			print("Hello "..player["name"])
+--		end
+--	end
+--end
+
+
+detectDevice()
+local devicePlace = detectDevice("monitor")
+if devicePlace ~= nil then
+	Ecran = peripheral.wrap(devicePlace)
+	term.redirect(Ecran)
+else
+	Ecran = term.current();
+end
+
+devicePlace = detectDevice("openperipheral_sensor")
+if devicePlace ~= nil then
+	Sensor = peripheral.wrap(devicePlace)
+end
+
+Ecran.clear()
+Ecran.setTextColor(colors.yellow)
+	
+local bcontinue = true
+while bcontinue do
+	--bcontinue = detectEvent()
+    sayHelloToPlayer()
+end
+
+term.restore()
+
